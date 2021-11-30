@@ -136,7 +136,16 @@ def clean_tweet(tweet, col_names):
     if tweet['quotedTweet']:
         tweet['quotedTweet'] = tweet['quotedTweet'].url
     if tweet['media']:
-        media_urls = ", ".join([media.fullUrl for media in tweet['media']])
+        media_urls = []
+        for media in tweet['media']:
+            if media.__class__.__name__ in ['Gif', 'Video']:
+                url = media.thumbnailUrl
+            elif media.__class__.__name__ == "Photo":
+                url = media.fullUrl
+            else:
+                url = "tweet media type not recognized"
+            media_urls.append(url)
+        media_urls = ", ".join([media_url for media_url in media_urls])
         tweet['media'] = media_urls
     if tweet['coordinates']:
         tweet['coordinates'] = str(tweet['coordinates'].latitude) + ", " + str(tweet['coordinates'].longitude)
