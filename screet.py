@@ -5,14 +5,16 @@ import psycopg2
 from psycopg2 import errors
 from psycopg2.extras import execute_values, DictCursor
 from config import username, password, host, port
+import os
 
 UniqueViolation = errors.lookup('23505')
 
 SEARCH_TERMS = ["covid", "corona", "coronavirus", "corona virus", "covid-19", "pandemic", "plandemic", "lockdown",
                 "virus", "vaccine"]
-
-SINCE = datetime.datetime.strptime("2021-01-01", "%Y-%m-%d")
-UNTIL = datetime.datetime.strptime("2021-01-31", "%Y-%m-%d")
+SINCE = os.environ.get("SCREET_SINCE", "2021-01-01")
+UNTIL = os.environ.get("SCREET_UNTIL", "2021-01-31")
+SINCE = datetime.datetime.strptime(SINCE, "%Y-%m-%d")
+UNTIL = datetime.datetime.strptime(UNTIL, "%Y-%m-%d")
 
 
 @click.group()
@@ -127,7 +129,7 @@ def begin_scraping(conn, col_names, limit, search_terms=None, since=SINCE, until
 
 def clean_tweet(tweet, col_names):
     tweet = tweet.__dict__
-    tweet['user_id'] = tweet['user'].id  # must rename to corresponding DB column,
+    tweet['user_id'] = tweet['user'].id  # must rename to corresponding DB column (psql seems not to accept 'user' as a column'),
                                            # and save url string rather than User obj
     if tweet['inReplyToUser']:
         tweet['inReplyToUser'] = tweet['inReplyToUser'].id
