@@ -21,7 +21,6 @@ UNTIL = datetime.datetime.strptime(UNTIL, "%Y-%m-%d")
 def main():
     pass
 
-
 @main.command()
 @click.argument('limit', type=click.INT)
 def scrape(limit):
@@ -35,7 +34,16 @@ def scrape(limit):
         min_date = datetime.datetime.strptime(day + "-00:00:00", "%Y-%m-%d-%H:%M:%S")
         max_date = min_date + datetime.timedelta(days=1)
         oldest_tweet = get_tweets(conn, order="ASC", number_of_tweets=1, min_date=min_date, max_date=max_date)[0]
+        start_dbcount = get_dbcount()
         begin_scraping(conn=conn, col_names=col_names, max_id=oldest_tweet['id'], since=latest_tweet['date'],
+                       limit=limit)
+        end_dbcount = get_dbcount()
+        if start_dbcount == end_dbcount:
+            # band-aid for an issue. Twitter returns tweets starting with the end of the day.
+            # this means max-id can be used to pick up where scraping left off mid day
+            # however, once the next day is reached, max-id will prevent any new tweets from being scraped
+            # therefore, scraping should be re-initiated with no max-id
+            begin_scraping(conn=conn, col_names=col_names, since=latest_tweet['date'],
                        limit=limit)
     else:
         begin_scraping(conn=conn, col_names=col_names, limit=limit)
@@ -44,6 +52,9 @@ def scrape(limit):
 
 @main.command()
 def dbcount():
+    print(get_dbcount())
+
+def get_dbcount():
     conn = establish_connection()
     cur = conn.cursor(cursor_factory=DictCursor)
     cur.execute(f'''SELECT count(*) FROM tweets''')
@@ -52,9 +63,9 @@ def dbcount():
         tweet_count = tweet_count[0]
     else:
         tweet_count = 0
-    print(tweet_count)
     cur.close()
     conn.close()
+    return tweet_count
 
 
 def establish_connection():
