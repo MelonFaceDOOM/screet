@@ -12,6 +12,7 @@ UniqueViolation = errors.lookup('23505')
 SEARCH_TERMS = ["covid", "corona", "coronavirus", "corona virus", "covid-19", "pandemic", "plandemic", "lockdown",
                 "virus", "vaccine"]
 LIMIT = os.environ.get("SCREET_LIMIT", 1000)
+LIMIT = int(LIMIT)
 SINCE = os.environ.get("SCREET_SINCE", "2021-05-30")
 UNTIL = os.environ.get("SCREET_UNTIL", "2021-05-30")
 SINCE = datetime.datetime.strptime(SINCE, "%Y-%m-%d")
