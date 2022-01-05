@@ -1,4 +1,10 @@
+.git/
 .idea/
+.ipynb_checkpoints/
 __pycache__/
 venv/
 config.py
+psql commands.txt
+*.ipynb
+*.csv
+*.sql

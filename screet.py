@@ -4,17 +4,16 @@ import snscrape.modules.twitter as sntwitter
 import psycopg2
 from psycopg2 import errors
 from psycopg2.extras import execute_values, DictCursor
-from config import username, password, host, port
+from config import username, password, host, port, dbname
 import os
 
 UniqueViolation = errors.lookup('23505')
 
-SEARCH_TERMS = ["covid", "corona", "coronavirus", "corona virus", "covid-19", "pandemic", "plandemic", "lockdown",
-                "virus", "vaccine"]
-LIMIT = os.environ.get("SCREET_LIMIT", 1000)
+SEARCH_TERMS = ["covid"]
+LIMIT = os.environ.get("SCREET_LIMIT", 300000)
 LIMIT = int(LIMIT)
-SINCE = os.environ.get("SCREET_SINCE", "2021-05-30")
-UNTIL = os.environ.get("SCREET_UNTIL", "2021-05-30")
+SINCE = os.environ.get("SCREET_SINCE", "2021-01-31")
+UNTIL = os.environ.get("SCREET_UNTIL", "2021-02-01")
 SINCE = datetime.datetime.strptime(SINCE, "%Y-%m-%d")
 UNTIL = datetime.datetime.strptime(UNTIL, "%Y-%m-%d")
 
@@ -31,17 +30,34 @@ def scrape():
     oldest_tweet = get_tweets(conn, order="ASC", number_of_tweets=1, min_date=SINCE, max_date=UNTIL)
     if oldest_tweet:
         oldest_tweet = oldest_tweet[0]
+        end_date = oldest_tweet['date'] + datetime.timedelta(days=1)
+        
         start_dbcount = get_dbcount()
-        begin_scraping(conn=conn, col_names=col_names, max_id=oldest_tweet['id'], until=oldest_tweet['date'])
+        begin_scraping(conn=conn, col_names=col_names, max_id=oldest_tweet['id'], until=end_date)
         end_dbcount = get_dbcount()
         if start_dbcount == end_dbcount:
             # band-aid for an issue. Twitter returns tweets starting with the end of the day.
             # this means max-id can be used to pick up where scraping left off mid day
             # however, once a day is completed, max-id will prevent the next day from being accessed.
             # therefore, scraping should be re-initiated with no max-id
-            begin_scraping(conn=conn, col_names=col_names, until=oldest_tweet['date'])
+            begin_scraping(conn=conn, col_names=col_names, until=end_date)
     else:
         begin_scraping(conn=conn, col_names=col_names)
+    conn.close()
+
+
+@main.command()
+@click.option('-c', '--confirmation', is_flag=True, help="confirm 'yes' to clear database.")
+def clear(confirmation):
+    conn = establish_connection()
+    cur = conn.cursor()
+    reply = 'x'
+    while reply[0] not in ['y', 'n']:
+        reply = input("Are you sure you want to clear the database? (y/n): ").lower().strip()
+    if reply[0] == 'y':
+        cur.execute('''DROP TABLE tweets''')
+        conn.commit()
+    cur.close()
     conn.close()
 
 
@@ -101,7 +117,7 @@ def get_dbcount():
 
 
 def establish_connection():
-    conn = psycopg2.connect(database="tweets", user=username, password=password, host=host, port=port)
+    conn = psycopg2.connect(database=dbname, user=username, password=password, host=host, port=port)
     return conn
 
 
@@ -157,7 +173,6 @@ def begin_scraping(conn, col_names, search_terms=None, limit=LIMIT, since=SINCE,
         search_terms = SEARCH_TERMS
 
     search_terms_string = " OR ".join(search_terms) # i.e. "covid OR corona OR pandemic"
-    until = until + datetime.timedelta(days=1) # until tag seems not to be inclusive
     keywords_string = "since:" + since.strftime("%Y-%m-%d") + " until:" + until.strftime("%Y-%m-%d")
     # i.e. "since:2021-01-01 until:2021-12-01"
     if max_id:
