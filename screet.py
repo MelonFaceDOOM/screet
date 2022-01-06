@@ -51,10 +51,13 @@ def scrape():
 def clear(confirmation):
     conn = establish_connection()
     cur = conn.cursor()
-    reply = 'x'
-    while reply[0] not in ['y', 'n']:
-        reply = input("Are you sure you want to clear the database? (y/n): ").lower().strip()
-    if reply[0] == 'y':
+    if not confirmation:
+        reply = 'x'
+        while reply[0] not in ['y', 'n']:
+            reply = input("Are you sure you want to clear the database? (y/n): ").lower().strip()
+        if reply[0] == 'y':
+            confirmation = True
+    if confirmation:
         cur.execute('''DROP TABLE tweets''')
         conn.commit()
     cur.close()
