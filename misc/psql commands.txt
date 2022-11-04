@@ -1,0 +1,11 @@
+pg_dump -U username -h ip -p port dbname > outputfilename
+
+psql -U username -d dbname < inputfilename
+To run the above on a new pc, youll first need to create the role and the database
+psql -U username
+password
+create database dbname;
+create role bluejay username;
+
+scp tweets.sql root@68.183.52.128:~/tweets
+psql -h 127.0.0.1 -p 5432 -d dbname -U username -c "copy(SELECT columnname FROM tablename) to stdout DELIMITER ',' CSV;" > outputfilename

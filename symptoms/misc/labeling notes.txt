@@ -1,0 +1,14 @@
+pfizer: bntx, BNT162b2
+Ad26.COV2.S 
+
+remove symptoms:
+anasthesia
+vaccination error
+Accidental overdose
+Extra dose administered
+Incorrect dose administered
+Needle issue
+overdose
+underdose
+Vaccination error
+Off label use

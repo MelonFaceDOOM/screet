@@ -1,0 +1,36 @@
+
+ 
+ 
+ mrna
+ Pfizer, BioNTech, Pfizer–BioNTech, tozinameran, Comirnaty
+ Moderna, spikevax
+ CureVac, CVnCoV
+ 
+Adenovirus vector, viral vector
+ Oxford–AstraZeneca, AZD1222, Covishield, Vaxzevria
+ Sputnik V,  Gam-COVID-Vac
+ Convidecia, AD5-nCOV, Pakvac 
+ Janssen, Ad26.COV2.S, Johnson & Johnson, J&J
+ 
+Inactivated virus 
+ Chinese
+     Sinovac, Sinovac Biotech
+        CoronaVac
+     Sinopharm
+        BIBP, BBIBP, BBIBP-CorV
+        WIBP
+ Covaxin, BBV152, Bharat, Indian
+ CoviVac, Russian
+ QazVac, QazCovid-in, Kazakhstani
+ COVIran Barekat, Iranian
+ Valneva, VLA2001, Dynavax, French
+ 
+Subunit
+ EpiVacCorona, EpiVakKorona, Russian
+ ZF2001, Zifivax, ZF-UZ-VAC-2001, Chinese
+ MVC-COV1901, MVC, Medigen, Medigen Vaccine Biologics, Taiwanese
+ Corbevax
+ Novavax, Nuvaxovid, Covovax
+ Soberana, Soberana 2, Soberana 02, PastoCovac, Cuban
+ Sanofi–GSK, VAT00002, VAT00008 
+ V451

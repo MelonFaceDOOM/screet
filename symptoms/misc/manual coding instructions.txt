@@ -1,0 +1,47 @@
+Hello all,
+
+We are seeking assistance with some manual labeling for the twitter scraping project.
+
+We have a database of Tweets which has been filtered down to Tweets that should be about symptoms related to the vaccine.
+
+The data contains false positives and other noise that we want to label. The labeled data will be used to develop a machine learning approach to vaccine/symptom identification in Tweets.
+
+Each tweet will be labeled for three true/false variables:
+ - symptom_mentioned
+ - symptom_positively_related_to_vaccine
+ - personal_report
+
+The number of Tweets each person will be asked to do will depend on how many participants there are. I've done 100 tweets and it took about 10 minutes. The work is pretty tedious so you'll likely want to split it up, but I believe the total workload will be 4-8 hours per person (Manually labeling a few thousand tweets).
+If you are interested in helping, please reply and let me know. If you have others on your team who might participate, please discuss with them and then reply to me with a list of people who have confirmed their participation.
+
+I will assign each participant a set of tweets next Monday along with more detailed instructions.
+The due date to complete the labeling will be Wednesday May 4th.
+
+Please reply to this email by this Friday (Apr 22) if you wish to participate.
+
+Regards,
+
+Jacob
+
+---------------------------------------
+
+Thank you very much for volunteering to help! We have 11 participants in this  covid vaccine symptom manual coding exercise. I'm emailing the whole group at once so that we have an easy means of sharing relevant information to the whole group. If you encounter issues that you think may affect everyone, please reply all to this email. You can also just email me if you're unsure.
+
+The exercise:
+There is a csv file with each of your names containing a little over 2200 rows. Each row has the text of a tweet, as well as a symptom that has been identified in that text.
+For each row in your csv, you will go through and mark three flags as True/False. The flags are these three columns:
+    symptom_mentioned: True as long as the symptom from Column B is mentioned in the Tweet as a symptom. It doesn't need to be an exact text match. Its mention doesn't need to be related to covid or the vaccine, but it does need to be a medical symptom.
+    symptom_positively_related_to_vaccine: True if the symptom was claimed to be related to a covid vaccine. Mark False if they are mentioning it as a symptom of COVID, rather than the vaccine. Mark False if they are saying it is NOT caused by the vaccine.
+    personal_report: True if they are speaking of their own experience, a friend's, or a patient's. It should be something they personally and directly saw. Mark False if sharing articles or general knowledge.
+
+
+Dealing with ambiguities:
+If a tweet contains both general information as well as a specific report, mark personal_report as True.
+If it's hard to tell if a tweet is about a personal account (i.e. they just list a bunch of symptoms with no context), mark personal_report as False.
+If you can't tell whether it is supporting or denying the relation between the vaccine and the symptom, mark symptom_positively_related_to_vaccine as True.
+
+Other info:
+We are not assessing truthfulness in this exercise, we are just determining whether the text of the tweet contains the three flags mentioned.
+For some of the symptoms in your file, you will find that almost all the tweets associated with it are very similar. If you notice a pattern, you can save a lot of time by copying and pasting the same answers for all rows of the same symptom, and then read through each one and only make changes where necessary. This will save a ton of time compared to writing out true/false three times for every single row.
+Due to some encoding nonsense, some characters will appear strangely. For instance, apostrophes may show as "â€". This doesn't affect alphanumeric characters and shouldn't render tweets illegible.
+Do not use any external information to make determinations (i.e. clicking into links). 
