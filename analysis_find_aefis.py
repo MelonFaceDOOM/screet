@@ -6,26 +6,41 @@ from config import LOCAL_DB_CREDENTIALS
 from db.db_client import establish_psql_connection, PsqlClient
 
 
-aefis_file = r"symptoms\aefis.txt"
-symptom_file = "other_data\COVID-Twitter-Symptom-Lexicon.tsv"
+aefis_file = r"symptoms/aefis.txt"
+symptom_file = "other_data/COVID-Twitter-Symptom-Lexicon.tsv"
+
 
 def main():
-    data_source = "panacea"
-    output_file = "aefi_tweet_text_2022-10-14.txt" 
-    unique_text_and_date = get_all_unique_aefis_with_date_for_data_source(data_source)
-    unique_text = "\n".join([u[0] for u in unique_text_and_date])
-    with open(output_file, "w", newline="", encoding='utf-8') as f:
-        f.write(unique_text)
-        # writer = csv.writer(f)
-        # writer.writerows(unique_text)
+    data_source = "monkeypox"
+    all_text_and_date = get_all_aefis_with_date_for_data_source(data_source)
+    unique_text_and_date = clean_and_keep_unique_text_and_date(all_text_and_date)
+    unique_text_with_date = clean_and_keep_unique_text_with_date(all_text_and_date)
+    with open("mp_aefi_text_date_combos_2022-11-30.csv", 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['tweet_text', 'date'])
+        for row in unique_text_and_date:
+            writer.writerow(row)
+
+    with open("mp_aefi_unqiue_text_2022-11-30.csv", 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['tweet_text', 'date'])
+        for row in unique_text_with_date:
+            writer.writerow(row)
+
 
 def get_all_unique_aefis_with_date_for_data_source(data_source):
+    all_text_and_date = get_all_aefis_with_date_for_data_source(data_source)
+    unique_text_with_date = clean_and_keep_unique_text_with_date(all_text_and_date)
+    return unique_text_with_date
+
+
+def get_all_aefis_with_date_for_data_source(data_source):
     conn = establish_psql_connection(**LOCAL_DB_CREDENTIALS)
     client = PsqlClient(conn)
     all_text_and_date = get_tweet_text_and_date_with_symptoms(client, data_source)
-    unique_text_and_date = clean_and_keep_unique_text_and_date(all_text_and_date)
-    return unique_text_and_date
-    
+    return all_text_and_date
+
+
 def get_tweet_text_and_date_with_symptoms(client, data_source):
     symptoms = get_symptoms()
     all_text_and_date = []
@@ -63,17 +78,32 @@ def clean_tweet_text(tweet_text):
     tweet_text = tweet_text.replace('\n','/n')
     return tweet_text
 
+
 def clean_and_keep_unique_text_and_date(all_text_and_date):
-    # cleans text and keeps unique (date is not considered when defining unique)
-    cleaned_text_and_date = []
+    '''cleans text and keeps unique text/date combos'''
+    unique_text_and_date = set()
+    for tweet_text, tweet_date in all_text_and_date:
+        cleaned_tweet_text = clean_tweet_text(tweet_text)
+        if len(cleaned_tweet_text) > 3:
+            unique_text_and_date.add((cleaned_tweet_text, tweet_date))
+    unique_text_and_date = list(unique_text_and_date)
+    unique_text_and_date.sort(key=lambda x: x[1])
+    return unique_text_and_date
+
+
+def clean_and_keep_unique_text_with_date(all_text_and_date):
+    '''cleans text and keeps unique (date is not considered when defining unique)'''
+    unique_text_with_date = []
     unique_text = set()
     for tweet_text, tweet_date in all_text_and_date:
         cleaned_tweet_text = clean_tweet_text(tweet_text)
         if len(cleaned_tweet_text)>3:
             if cleaned_tweet_text not in unique_text:
                 unique_text.add(cleaned_tweet_text)
-                cleaned_text_and_date.append([cleaned_tweet_text, tweet_date])
-    return cleaned_text_and_date
+                unique_text_with_date.append([cleaned_tweet_text, tweet_date])
+    unique_text_with_date = list(unique_text_with_date)
+    unique_text_with_date.sort(key=lambda x: x[1])
+    return unique_text_with_date
 
 
 def get_all_text(client, data_source, output_file):

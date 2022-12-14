@@ -5,8 +5,8 @@ import re
 
 
 def main():
-    start_date = datetime.date.fromisoformat("2022-07-10")
-    save_folder = "source_4"
+    start_date = datetime.date.fromisoformat("2022-09-11")
+    save_folder = "source/source_5"
     daily_files_page = requests.get("https://github.com/thepanacealab/covid19_twitter/tree/master/dailies")
     tree = html.fromstring(daily_files_page.text)
     daily_file_urls = tree.xpath("//div[@role='row']/div/span/a")

@@ -10,7 +10,7 @@ def main():
         search_for_term(search_term)
     save_files_in_search_results_folder()
     update_imported_data()
-    do_todays_analysis()
+#    do_todays_analysis()
     
 
 if __name__ == "__main__":

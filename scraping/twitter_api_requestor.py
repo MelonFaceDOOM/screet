@@ -132,6 +132,7 @@ class MultiFileHydrator(TwitterIdHydrator):
             return 0
         with open(self.current_sample_progress_file_path, 'r') as f:
             hydrated_id_count = int(f.read().strip())
+        print(hydrated_id_count)  # TODO: delete
         return hydrated_id_count
     
     def get_unhydrated_tweet_ids_from_file(self, file_path):
@@ -229,6 +230,7 @@ class SearchManager(TwitterSearcher):
             if self.total_tweet_limit:
                 if progress_dict['result_count'] >= self.total_tweet_limit:
                     break
+        os.remove(self.progress_file)  # TODO test
             
     def do_single_search(self):
         for response in search_loop():

@@ -3,7 +3,7 @@ from config import LOCAL_DB_CREDENTIALS
 from db.db_client import PsqlClient, establish_psql_connection
 from db.models import TwitterVaccineMention
 
-vaccines_file = r"vaccines\vaccines.txt"
+vaccines_file = r"vaccines/vaccines.txt"
 
 
 def main():
@@ -11,20 +11,22 @@ def main():
     client = PsqlClient(conn)
     update_vaccine_mentions(client)
 
-def update_vaccine_mentions(client):
-    client.clear_vaccine_mentions_table()
+
+def update_vaccine_mentions(client, tweet_ids):
     vaccines = get_vaccines()
-    vaccine_mentions = []
     for vaccine in vaccines:
         for vaccine_synonym in vaccines[vaccine]:
             formatted_query = format_query(vaccine_synonym)
-            results = client.search_phrase_in_tweets(formatted_query)
-            for result in results:
-                vaccine_mention = TwitterVaccineMention(
-                    tweet_id=result['id'],
-                    vaccine_mentioned=vaccine_synonym)
-                vaccine_mentions.append(vaccine_mention)
-    client.save_many_vaccine_mentions(vaccine_mentions)
+            for results in client.search_phrase_in_tweet_ids(formatted_query, chunk_size=3_000_000,
+                                                             tweet_ids=tweet_ids):
+                vaccine_mentions = []
+                for result in results:
+                    vaccine_mention = TwitterVaccineMention(
+                        tweet_id=result['id'],
+                        vaccine_mentioned=vaccine_synonym)
+                    vaccine_mentions.append(vaccine_mention)
+                if vaccine_mentions:
+                    client.save_many_vaccine_mentions(vaccine_mentions)
 
 
 def format_query(raw):

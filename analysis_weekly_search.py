@@ -11,6 +11,7 @@ from config import LOCAL_DB_CREDENTIALS
 from db.db_client import establish_psql_connection
 from analysis_find_aefis import get_all_unique_aefis_with_date_for_data_source
 
+
 data_sources = ["monkeypox", "polio"]
 
 def main():
@@ -21,7 +22,7 @@ def main():
         
 def do_todays_analysis():
     date = datetime.date.today()
-    output_folder_path = f"analysis\{' '.join(data_sources)} {date}"
+    output_folder_path = f"analysis/{' '.join(data_sources)} {date}"
     for data_source in data_sources:
         data_file_path, aefi_file_path = make_folder_and_set_filepaths(output_folder_path=output_folder_path,
                                                                        data_source=data_source,
@@ -63,6 +64,12 @@ def make_folder_and_set_filepaths(output_folder_path, data_source, date):
 def query_and_save_data(data_file_path, aefi_file_path, data_source):
     # saving the data to csv will save time if we re-run analysis on the data because the query takes a while.
     tweets_for_data_source = get_tweets_for_data_source(data_source)
+    for tweet in tweets_for_data_source:
+         # todo: this should be temporary. fix by changing the values in the db (but that will take long to run).
+        tweet['tweet_text'] = tweet['tweet_text'].replace(u'\xa0', u' ')
+        tweet['tweet_text'] = tweet['tweet_text'].replace('\n', '/n')
+        tweet['tweet_text'] = tweet['tweet_text'].replace('\r', '/r')
+            
     df = pd.DataFrame(tweets_for_data_source)
     df.to_csv(data_file_path, encoding='utf-8', index=False)
     unique_aefi_text_and_date = get_all_unique_aefis_with_date_for_data_source(data_source)
@@ -71,7 +78,6 @@ def query_and_save_data(data_file_path, aefi_file_path, data_source):
     
 
 def get_tweets_for_data_source(data_source):
-    # this is good because the select statement takes a while to run.
     conn = establish_psql_connection(**LOCAL_DB_CREDENTIALS)
     cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute('''SELECT * FROM tweets WHERE source = %s''', (data_source,))

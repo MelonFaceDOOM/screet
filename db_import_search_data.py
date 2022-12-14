@@ -1,15 +1,16 @@
-import csv
-import sys
 import os
+import shutil
 
 from config import LOCAL_DB_CREDENTIALS
-from utilities import get_file_names_and_paths_from_folder, get_only_file_paths_from_folder
+from psycopg2.extras import RealDictCursor
+from utilities import get_only_file_paths_from_folder
 from scraping.parse_twitter_response import read_twitter_response, parse_twitter_responses
 from db.db_client import PsqlClient, establish_psql_connection
-from db.models import ParsedResponseData
 
 
-folder = 'C:\proj\covid_scraping\screet\data\search_results'
+folder = '/data/screet_data/search_results'
+imported_folder = '/data/screet_data/search_results/imported to db'
+data_sources = ["polio", "monkeypox"]
 
 
 def main():
@@ -29,8 +30,9 @@ def save_files_in_search_results_folder():
     files = get_data_files_from_folder(folder)
     conn = establish_psql_connection(**LOCAL_DB_CREDENTIALS)
     client = PsqlClient(conn=conn)
-    data_sources = ["polio", "monkeypox"]
     for file_path in files:
+        file_name = os.path.basename(file_path)
+        dst_file_path = os.path.join(imported_folder, file_name)
         for data_source in data_sources:
             if data_source in file_path:
                 break
@@ -43,6 +45,7 @@ def save_files_in_search_results_folder():
                 tweet.source = data_source
             client.save_parsed_response_data(parsed_response_data)
             print(f'saved {file_path} to db')
+            shutil.move(file_path, dst_file_path)
 
 
 if __name__ == "__main__":

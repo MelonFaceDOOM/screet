@@ -7,5 +7,5 @@ password
 create database dbname;
 create role bluejay username;
 
-scp tweets.sql root@68.183.52.128:~/tweets
+scp tweets.sql root@ip:~/dbname
 psql -h 127.0.0.1 -p 5432 -d dbname -U username -c "copy(SELECT columnname FROM tablename) to stdout DELIMITER ',' CSV;" > outputfilename

@@ -9,9 +9,10 @@ samples/
 source/
 hydrated/
 hydrated_imported/
-hydrated_misc/
+misc/
 search_results/
 config.py
+temp.py
 *.db
 *.csv
 aefis_2022_08_20_no_duplicates.txt

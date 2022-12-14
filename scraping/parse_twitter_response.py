@@ -7,7 +7,8 @@ from db.models import Tweet, TweetError, TwitterUser, TwitterLink, ParsedRespons
 def read_twitter_response(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         twitter_response_data = f.read()
-        twitter_response_data = twitter_response_data.replace('\\u0000', '')
+        twitter_response_data = twitter_response_data.replace('\\u0000', '') # todo: should this be u'\u0000'?
+        twitter_response_data = twitter_response_data.replace(u'\xa0', ' ')
         twitter_response_data = twitter_response_data.split('\n')
     return twitter_response_data
 

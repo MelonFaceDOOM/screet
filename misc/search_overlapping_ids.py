@@ -4,11 +4,11 @@ from utilities import csv_object_from_obj_list
 
 
 data_source_title = 'panacea'
-file_path = 'data/hydrated/panacea_2020_sample_4_hydrated.txt'
+file_path = '/data/screet_data/hydrated/panacea_2020_sample_4_hydrated.txt'
     
     
-search_results_1 = "data\search_results\imported to db\monkeypox_14.txt"
-search_results_2 = "data\search_results\imported to db\monkeypox_15.txt"
+search_results_1 = "/data/screet_data/hydrated/imported to db/monkeypox_14.txt"
+search_results_2 = "/data/screet_data/hydrated/imported to db/monkeypox_15.txt"
 
 twitter_response_data = read_twitter_response(search_results_1)
 parsed_response_data = parse_twitter_responses(twitter_responses=twitter_response_data)
