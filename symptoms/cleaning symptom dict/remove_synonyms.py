@@ -11,20 +11,36 @@ with open('manually_labeled_data_ratios.csv', 'r', encoding='utf-8') as f:
 
 
 def main():
-    create_symptoms_to_remove_file()
+    aefis_clean = make_dict_lower(aefis)
+    aefis_clean = replace_u2019(aefis_clean)
+    
     with open('symptoms_to_remove.txt', 'r') as f:
         symptoms_to_remove = f.read().split('\n')
-    aefis_clean = remove_symptoms_from_aefis(aefis, symptoms_to_remove)
-    
+    with open('null_symptoms.txt', 'r') as f:
+        symptoms_to_remove += f.read().split('\n')
+        
+#    print("crest syndrome" in symptoms_to_remove)
+    aefis_clean = remove_symptoms_from_aefis(aefis_clean, symptoms_to_remove)
+
     # remove duplicates within each synonym list
     aefis_clean = remove_synonyms_within_aefi(aefis_clean)
-    aefis_clean = make_dict_keys_lower(aefis_clean)
 
     aefis_clean = remove_conflicting_synoyms_from_aefi(aefis_clean, "autoimmune disorders")
     aefis_clean = remove_conflicting_synoyms_from_aefi(aefis_clean, "glomerulonephritis")
 
-    with open('aefis_clean.txt', 'w') as f:
+    with open('aefis_clean.txt', 'w', encoding='utf-8') as f:
         json.dump(aefis_clean, f, indent=4)
+
+
+def replace_u2019(aefis):
+    aefis_new = {}
+    for key in aefis:
+        new_key = key.replace("’", "'")
+        new_list = []
+        for synonym in aefis[key]:
+            new_list.append(synonym.replace("’", "'"))
+        aefis_new[new_key] = new_list
+    return aefis_new
     
 
 def remove_symptoms_from_aefis(aefis, symptoms_to_remove):
@@ -113,11 +129,15 @@ def dict_lists_len(inp_dict):
         total_len += len(inp_dict[key])
     return total_len
     
-
-def make_dict_keys_lower(upper_dict):
+    
+def make_dict_lower(upper_dict):
     lower_dict = {}
     for key in upper_dict:
-        lower_dict[key.strip().lower()] = upper_dict[key]
+        new_key = key.strip().lower()
+        new_list = []
+        for i in upper_dict[key]:
+            new_list.append(i.strip().lower())
+        lower_dict[new_key] = new_list
     return lower_dict
     
     

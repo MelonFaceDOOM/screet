@@ -132,7 +132,6 @@ class MultiFileHydrator(TwitterIdHydrator):
             return 0
         with open(self.current_sample_progress_file_path, 'r') as f:
             hydrated_id_count = int(f.read().strip())
-        print(hydrated_id_count)  # TODO: delete
         return hydrated_id_count
     
     def get_unhydrated_tweet_ids_from_file(self, file_path):
@@ -272,6 +271,21 @@ def build_api_url_with_ids(ids):
     }
     ids_text = ",".join(ids)
     url = f"https://api.twitter.com/2/tweets?ids={ids_text}"
+    for key in url_components:
+        component_text = ",".join(url_components[key])
+        url += f"&{key}={component_text}"
+    return url
+    
+    
+def build_api_url_with_conversation_id(conversation_id):
+    url_components = {
+        'expansions': ['author_id', 'geo.place_id'],
+        'tweet.fields': ['id', 'author_id', 'conversation_id', 'created_at', 'public_metrics', 'in_reply_to_user_id',
+                         'geo', 'text', 'referenced_tweets', 'entities'],
+        'user.fields': ['id', 'verified', 'created_at', 'location', 'public_metrics'],
+        'place.fields': ['country']
+    }
+    url = f"https://api.twitter.com/2/tweets?conversation_id:{conversation_id}"
     for key in url_components:
         component_text = ",".join(url_components[key])
         url += f"&{key}={component_text}"

@@ -88,28 +88,6 @@ class PsqlClient:
         self.conn.commit()
         cur.close()
     
-    def copy_many_objects(self, objs, table_name):
-        with self.conn.cursor() as cur:
-            cols = objs[0].attrs()
-            csv_file_like_object = io.StringIO()
-            # writer = csv.writer(csv_file_like_object, delimiter="|")
-            writer = csv.writer(csv_file_like_object)
-            ids_seen = set()
-            for obj in objs:
-                data = list(map(clean_csv_value, [getattr(obj, col) for col in cols]))
-                if data[0] not in ids_seen:
-                    ids_seen.add(data[0])
-                    writer.writerow(data)
-
-            csv_file_like_object.seek(0)
-            sql = generate_tweets_table_creation_sql(table_name="temp_tweets_from_file", temp_table=True)
-            cur.execute(sql)
-            sql = f"""COPY temp_tweets_from_file({",".join(cols)}) FROM STDIN WITH (FORMAT CSV)"""
-            cur.copy_expert(sql, csv_file_like_object)
-            sql = f"""INSERT INTO {table_name}({",".join(cols)}) SELECT {",".join(cols)} FROM temp_tweets_from_file ON CONFLICT DO NOTHING"""
-            cur.execute(sql)
-            self.conn.commit()
-
     def save_many_objects_to_table(self, objs, table_name):
         cur = self.conn.cursor()
         cols = objs[0].attrs()
@@ -153,33 +131,6 @@ class PsqlClient:
     def save_many_fact_checker_articles(self, fact_checker_articles):
         self.save_many_objects_to_table(fact_checker_articles, "fact_checker_articles")
         
-    def save_parsed_response_data2(self, parsed_response_data):
-        t1 = time.perf_counter()
-        if parsed_response_data.tweets:
-            self.copy_many_objects(parsed_response_data.tweets, "tweets")
-        t2 = time.perf_counter()
-        if parsed_response_data.users:
-            try:
-                self.save_many_users(parsed_response_data.users)
-            except:
-                for user in parsed_response_data.users:
-                    try:
-                        self.save_user(user)
-                    except:
-                        cols = user.attrs()
-                        print([getattr(user, col) for col in cols])
-        t3 = time.perf_counter()
-        if parsed_response_data.errors_with_id:
-            self.save_many_errors(parsed_response_data.errors_with_id)
-        t4 = time.perf_counter()
-        if parsed_response_data.links:
-            self.copy_many_objects(parsed_response_data.links, "links")
-        t5 = time.perf_counter()
-        print("tweets: ", t2-t1)
-        print("users: ", t3-t2)
-        print("errors: ", t4-t3)
-        print("links: ", t5-t4)
-        
     def save_parsed_response_data(self, parsed_response_data):
         t1 = time.perf_counter()
         if parsed_response_data.tweets:
@@ -206,49 +157,20 @@ class PsqlClient:
         # print("users: ", t3-t2)
         # print("errors: ", t4-t3)
         # print("links: ", t5-t4)
-    
         
-    def clear_vaccine_mentions_table(self):
+    def tweet_id_to_text(self, tweet_id):
+        tweet_id = int(tweet_id)
         cur = self.conn.cursor()
-        cur.execute('''TRUNCATE vaccine_mentions''')
-        self.conn.commit()
+        query = '''SELECT tweet_text
+                        FROM tweets
+                        WHERE id = %s'''
+        cur.execute(query, (tweet_id,))
+        tweet_text = cur.fetchall()
+        if tweet_text:
+            tweet_text = tweet_text[0]
         cur.close()
+        return tweet_text
 
-    def get_unchecked_vaccine_tweet_ids(self):
-        cur = self.conn.cursor()
-        cur.execute('''SELECT id FROM tweets WHERE vaccine_tweet_checked=false''')
-        results = cur.fetchall()
-        unchecked_vaccine_tweet_ids = tuple([i[0] for i in results])
-        return unchecked_vaccine_tweet_ids
-
-    def get_vaccine_related_tweets(self):
-        cur = self.conn.cursor(cursor_factory=RealDictCursor)
-        cur.execute('''SELECT * FROM vaccine_tweets''')
-        results = cur.fetchall()
-        cur.close()
-        return results
-
-    def create_vaccine_tweets_table(self):
-        cur = self.conn.cursor()
-        cur.execute('''DROP TABLE IF EXISTS vaccine_tweets''')
-        cur.execute('''CREATE TABLE vaccine_tweets AS
-                       SELECT DISTINCT tweets.*
-                       FROM tweets INNER JOIN vaccine_mentions
-                       ON tweets.id = vaccine_mentions.tweet_id''')
-        cur.execute('''CREATE INDEX vaccine_ts_idx ON vaccine_tweets USING GIN (ts);''')
-        cur.execute('''ALTER TABLE vaccine_tweets ADD UNIQUE (id)''')
-        self.conn.commit()
-        cur.close()
-    
-    def search_vaccine_tweet_text(self, search_phrase, data_source):
-        cur = self.conn.cursor(cursor_factory=RealDictCursor)
-        cur.execute(f'''SELECT * FROM vaccine_tweets
-                        WHERE ts @@ phraseto_tsquery('english', '{search_phrase}')
-                        AND source = %s''', (data_source,))
-        results = cur.fetchall()
-        cur.close()
-        return results
-        
     def search_words_in_tweets(self, search_words):
         search_string = " ".join(search_words)
         cur = self.conn.cursor(cursor_factory=RealDictCursor)
@@ -258,15 +180,6 @@ class PsqlClient:
         results = cur.fetchall()
         cur.close()
         return results
-        
-#    def search_phrase_in_tweets(self, search_phrase, chunk_size):
-#        cur = self.conn.cursor(cursor_factory=RealDictCursor)
-#        cur.execute(f'''SELECT *
-#                        FROM tweets
-#                        WHERE ts @@ phraseto_tsquery('english', '{search_phrase}');''')
-#        results = cur.fetchall()
-#        cur.close()
-#        return results
         
     def search_phrase_in_tweets(self, search_phrase, chunk_size):
         cur = self.conn.cursor(cursor_factory=RealDictCursor)
@@ -302,28 +215,53 @@ class PsqlClient:
             results = cur.fetchall()
             yield results
         cur.close()
-        # cur = self.conn.cursor(cursor_factory=RealDictCursor)
-        # results = ["null]"]
-        # max_id = 0
-        # while results:
-        #     cur.execute(f'''SELECT *
-        #                     FROM tweets
-        #                     WHERE ts @@ phraseto_tsquery('english', '{search_phrase}')
-        #                     AND id in %s
-        #                     AND id > %s
-        #                     ORDER BY id ASC
-        #                     LIMIT %s;''', (tweet_ids, max_id, chunk_size))
-        #     results = cur.fetchall()
-        #     if results:
-        #         max_id = results[-1]['id']
-        #         yield results
-        # cur.close()
-
+        
+    def create_vaccine_tweets_table(self):
+        cur = self.conn.cursor()
+        cur.execute('''DROP TABLE IF EXISTS vaccine_tweets''')
+        cur.execute('''CREATE TABLE vaccine_tweets AS
+                       SELECT DISTINCT tweets.*
+                       FROM tweets INNER JOIN vaccine_mentions
+                       ON tweets.id = vaccine_mentions.tweet_id''')
+        cur.execute('''CREATE INDEX vaccine_ts_idx ON vaccine_tweets USING GIN (ts);''')
+        cur.execute('''ALTER TABLE vaccine_tweets ADD UNIQUE (id)''')
+        self.conn.commit()
+        cur.close()
+        
     def mark_tweet_ids_as_vaccine_checked(self, tweet_ids):
         cur = self.conn.cursor()
         cur.execute('''UPDATE tweets set vaccine_tweet_checked=true
                        WHERE id in %s''', (tweet_ids,))
         self.conn.commit()
+
+    def get_unchecked_vaccine_tweet_ids(self):
+        cur = self.conn.cursor()
+        cur.execute('''SELECT id FROM tweets WHERE vaccine_tweet_checked=false''')
+        results = cur.fetchall()
+        unchecked_vaccine_tweet_ids = tuple([i[0] for i in results])
+        return unchecked_vaccine_tweet_ids
+        
+    def clear_vaccine_mentions_table(self):
+        cur = self.conn.cursor()
+        cur.execute('''TRUNCATE vaccine_mentions''')
+        self.conn.commit()
+        cur.close()
+        
+    def get_vaccine_related_tweets(self):
+        cur = self.conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute('''SELECT * FROM vaccine_tweets''')
+        results = cur.fetchall()
+        cur.close()
+        return results
+    
+    def search_vaccine_tweet_text(self, search_phrase, data_source):
+        cur = self.conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f'''SELECT * FROM vaccine_tweets
+                        WHERE ts @@ phraseto_tsquery('english', '{search_phrase}')
+                        AND source = %s''', (data_source,))
+        results = cur.fetchall()
+        cur.close()
+        return results
 
     def create_misinfo_tweets_table(self):
         cur = self.conn.cursor(cursor_factory=RealDictCursor)
@@ -350,11 +288,6 @@ class PsqlClient:
                        ) tweets
                        ON tb1.tweet_id = tweets.id
                        ''')
-        # cur.execute('''ALTER TABLE misinfo_tweets
-                       # ADD COLUMN ts tsvector GENERATED ALWAYS AS (to_tsvector('english', claim)) STORED''')
-        # cur.execute('''CREATE INDEX IF NOT EXISTS misinfo_ts_idx ON misinfo_tweets USING GIN (ts);''')
-        # cur.execute('''CREATE INDEX misinfo_ts_idx ON misinfo_tweets
-                       # USING gin(to_tsvector('english', claim));''')
         self.conn.commit()
         cur.close()
             
@@ -366,36 +299,11 @@ class PsqlClient:
         cur.close()
         return results
         
-    # def search_misinfo_tweets_claim_text(self, search_phrase):
-        # cur = self.conn.cursor(cursor_factory=RealDictCursor)
-        # cur.execute(f'''SELECT * FROM misinfo_tweets
-                        # WHERE to_tsvector('english', claim) @@ to_tsquery('english', '{search_phrase}');''')
-        # results = cur.fetchall()
-        # cur.close()
-        # return results
-        
-    def search_misinfo_tweets_claim_text(self, search_term):
-        """No apparent need for full text search functionality such as is done in tweet text,
-           so %like% is used instead"""
+    def search_misinfo_tweets_claim_text(self, search_phrase):
         cur = self.conn.cursor(cursor_factory=RealDictCursor)
-        search_pattern = f'%{search_term}%'
-        cur.execute('''SELECT * FROM misinfo_tweets WHERE claim LIKE %s''', (search_pattern,))
+        cur.execute(f'''SELECT * FROM misinfo_tweets
+                        WHERE to_tsvector('english', claim) @@ to_tsquery('english', '{search_phrase}');''')
         results = cur.fetchall()
-        self.conn.commit()
         cur.close()
         return results
-
-    def tweet_id_to_text(self, tweet_id):
-        tweet_id = int(tweet_id)
-        cur = self.conn.cursor()
-        query = '''SELECT tweet_text
-                        FROM tweets
-                        WHERE id = %s'''
-        cur.execute(query, (tweet_id,))
-        tweet_text = cur.fetchall()
-        if tweet_text:
-            tweet_text = tweet_text[0]
-        cur.close()
-        return tweet_text
-
         

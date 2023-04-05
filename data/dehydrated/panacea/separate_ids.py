@@ -4,8 +4,8 @@ import os
 def main():
     """source files have id and sentiment score.
     This script removes sentiment and saves only the ids."""
-    source_files_folder = "source/source_5"
-    output_folder = "ids/ids_5"
+    source_files_folder = "source/source_6"
+    output_folder = "ids/ids_2022_2"
     file_names_and_paths = get_file_names_and_paths_from_folder(source_files_folder)
     for file_name, file_path in file_names_and_paths:
         ids = get_ids_from_file(file_path)

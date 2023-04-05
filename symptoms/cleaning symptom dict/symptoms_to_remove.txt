@@ -7,6 +7,7 @@ sniffles
 cranky
 deflated
 i can't breathe
+breathless
 very tired
 threw up
 can't smell
@@ -15,11 +16,14 @@ temperature
 very hot
 no energy
 too weak
+weak
+hallucinating
 little appetite
 don't have energy
 choking
 back was hurting
 don't have the energy
+don't have energy
 stressed out
 stressed
 tasteless
@@ -32,12 +36,14 @@ burning up
 bursts of anger
 changed taste
 can't walk alone
+can't walk
 worry
 throw up
 could not smell
 couging
 throwing up
 exhausting
+exhaustion
 panic
 nasal cavity
 eyes were strained
@@ -59,6 +65,7 @@ chest hurts
 coughs
 persistent coughs
 head hurts
+headache
 headaches
 migraines
 fevers
@@ -72,3 +79,9 @@ cramps
 leg cramps
 aches
 pains
+too tired
+tired
+out of breath
+Multiple sclerosis
+thought i had the flu
+lousy
