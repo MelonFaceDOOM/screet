@@ -1,44 +1,46 @@
 import os
+import re
 import shutil
-
 from config import LOCAL_DB_CREDENTIALS
-from psycopg2.extras import RealDictCursor
-from utilities import get_only_file_paths_from_folder
+from utilities import get_file_paths_from_folder_and_subfolders, get_subfolder_paths_from_folder
 from scraping.parse_twitter_response import read_twitter_response, parse_twitter_responses
 from db.db_client import PsqlClient, establish_psql_connection
+from scraping.search import locate_progress_file
 
 
-folder = '/data/screet_data/search_results'
-imported_folder = '/data/screet_data/search_results/imported to db'
-data_sources = ["polio", "monkeypox"]
+not_imported = 'D:/screet_data/search_results/not imported'
+imported_folder = 'D:/screet_data/search_results/imported to db'
 
 
 def main():
     save_files_in_search_results_folder()
     
     
-def get_data_files_from_folder(folder):
-    files = get_only_file_paths_from_folder(folder)
-    data_files = []
-    for file in files:
-        if "progress" not in file:
-            data_files.append(file)
-    return data_files
+def get_data_file_paths_from_folder(folder):
+    file_paths = get_file_paths_from_folder_and_subfolders(folder)
+    data_file_paths = []
+    for file_path in file_paths:
+        if not "_progress" in file_path:
+            progress_file = locate_progress_file(file_path)
+            if not progress_file:
+                data_file_paths.append(file_path)
+    return data_file_paths
     
     
 def save_files_in_search_results_folder():
-    files = get_data_files_from_folder(folder)
     conn = establish_psql_connection(**LOCAL_DB_CREDENTIALS)
     client = PsqlClient(conn=conn)
-    for file_path in files:
-        file_name = os.path.basename(file_path)
-        dst_file_path = os.path.join(imported_folder, file_name)
-        for data_source in data_sources:
-            if data_source in file_path:
-                break
-        else:
-            data_source = None
-        if data_source:
+    unimported_search_folders = get_subfolder_paths_from_folder(not_imported)
+    for folder in unimported_search_folders:
+        data_source = re.split(r'[/\\]', folder)[-1]  # the data_source is the name of the folder.
+        # i.e. the "monkeypox" folder will hold 'mpox' and 'monkeypox' search results.
+        dst_folder_path = os.path.join(imported_folder, data_source)
+        if not os.path.exists(dst_folder_path):
+            os.makedirs(dst_folder_path)
+        file_paths = get_data_file_paths_from_folder(folder)
+        for file_path in file_paths:
+            file_name = os.path.basename(file_path)
+            dst_file_path = os.path.join(dst_folder_path, file_name)
             twitter_response_data = read_twitter_response(file_path)
             parsed_response_data = parse_twitter_responses(twitter_responses=twitter_response_data)
             for tweet in parsed_response_data.tweets:

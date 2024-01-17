@@ -8,8 +8,8 @@ from scraping.parse_twitter_response import read_twitter_response, parse_twitter
 from db.db_client import PsqlClient, establish_psql_connection
 
 
-hydrated_folder = "/data/screet_data/hydrated"
-imported_folder = "/data/screet_data/hydrated_imported"
+hydrated_folder = "D:/work/temp/screet_data/hydrated"
+imported_folder = "D:/work/temp/screet_data/hydrated_imported"
 data_source_title = 'panacea'
 
 

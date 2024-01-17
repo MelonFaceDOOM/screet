@@ -13,7 +13,7 @@ def establish_psql_connection(database, user, password, host, port):
 
 
 def generate_tweets_table_creation_sql(table_name, temp_table=False):
-    return f'''CREATE {"TEMPORARY " if temp_table else ""}TABLE IF NOT EXISTS {table_name}
+    return f"""CREATE {"TEMPORARY " if temp_table else ""}TABLE IF NOT EXISTS {table_name}
      (id BIGINT PRIMARY KEY NOT NULL,
      date_entered TIMESTAMP DEFAULT current_timestamp,
      source TEXT NOT NULL,
@@ -21,12 +21,12 @@ def generate_tweets_table_creation_sql(table_name, temp_table=False):
      conversation_id BIGINT NOT NULL,
      created_at DATE NOT NULL,
      tweet_text TEXT NOT NULL,
-     ts TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', tweet_text)) STORED,
+     ts TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', replace(tweet_text, '''',''))) STORED,
      vaccine_tweet_checked BOOLEAN NOT NULL DEFAULT false,
      retweet_count INTEGER,
      like_count INTEGER,
      reply_count INTEGER,
-     quote_count INTEGER)'''
+     quote_count INTEGER)"""
 
 
 class PsqlClient:
@@ -263,6 +263,15 @@ class PsqlClient:
         cur.close()
         return results
 
+    def query_vaccine_tweet_text(self, query, data_source):
+        cur = self.conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f'''SELECT * FROM vaccine_tweets
+                        WHERE ts @@ %s
+                        AND source = %s''', (query, data_source))
+        results = cur.fetchall()
+        cur.close()
+        return results
+
     def create_misinfo_tweets_table(self):
         cur = self.conn.cursor(cursor_factory=RealDictCursor)
         cur.execute('''DROP TABLE IF EXISTS misinfo_tweets''')
@@ -306,4 +315,19 @@ class PsqlClient:
         results = cur.fetchall()
         cur.close()
         return results
-        
+
+    def create_query(self, phrase):
+        cur = self.conn.cursor()
+        cur.execute('''SELECT phraseto_tsquery(%s)''', (phrase,))
+        r = cur.fetchall()
+        cur.close()
+        return r[0][0]
+
+    def debug_query(self, phrase):
+        cur = self.conn.cursor()
+        cur.execute('''SELECT ts_debug(%s)''', (phrase,))
+        r = cur.fetchall()
+        r = [row[0] for row in r]
+        debug = "\n".join(r)
+        cur.close()
+        return debug

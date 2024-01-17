@@ -2,12 +2,14 @@ import json
 import re
 import csv
 import time
+import pandas as pd
 from datetime import datetime
 from config import LOCAL_DB_CREDENTIALS
 from db.db_client import establish_psql_connection, PsqlClient
+from psycopg2.extras import RealDictCursor
 
 
-aefis_file = r"../symptoms/aefis.txt"
+symptoms_file = r"symptoms/symptom_queries.txt"
 data_sources = ["polio", "panacea", "monkeypox"]
 
 
@@ -21,26 +23,26 @@ def main():
 #    client = PsqlClient(conn)
 #    r = client.search_vaccine_tweet_text("can't breathe", "polio")
 #    print(len(r), r[:3])
-    save_aefis_for_all_data_sources()
+    save_symptoms_for_all_data_sources()
 
 
-def save_aefis_for_all_data_sources():
+def save_symptoms_for_all_data_sources():
     for data_source in data_sources:
-        save_all_aefis_for_data_sources(data_source)
+        save_all_symptom_tweets_for_data_sources(data_source)
 
 
-def save_all_aefis_to_file():
-    aefis = get_all_aefis_with_date_for_data_source('panacea')
+def save_all_symptom_tweets_to_file():
+    tweets = get_all_tweets_with_symptoms_with_date_for_data_source('panacea')
     with open('s4.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(['symptom', 'tweet_text', 'date'])
-        for row in aefis:
+        for row in tweets:
             writer.writerow(row)
             
             
-def save_all_aefis_for_data_sources(data_sources):
+def save_all_symptom_tweets_for_data_sources(data_sources):
     for data_source in data_sources:
-        all_text_and_date = get_all_aefis_with_date_for_data_source(data_source)
+        all_text_and_date = get_all_tweets_with_symptoms_with_date_for_data_source(data_source)
         unique_text_with_date = clean_and_keep_unique_text_with_date(all_text_and_date)
         
         output_file = f"{data_source}_{datetime.today().strftime('%Y-%m-%d')}.csv"
@@ -55,7 +57,7 @@ def clean_and_keep_unique_text_with_date(all_text_and_date):
     '''cleans text and keeps unique (date is not considered when defining unique)'''
     unique_text_with_date = []
     unique_text = set()
-    for symptom, tweet_text, tweet_date in all_text_and_date:
+    for tweet_text, tweet_date, symptom in all_text_and_date:
         cleaned_tweet_text = clean_tweet_text(tweet_text)
         if len(cleaned_tweet_text)>3:
             if cleaned_tweet_text not in unique_text:
@@ -67,7 +69,7 @@ def clean_and_keep_unique_text_with_date(all_text_and_date):
     
 
 def clean_and_keep_unique_text_and_date(all_text_and_date):
-    '''cleans text and keeps unique text/date combos'''
+    """cleans text and keeps unique text/date combos"""
     unique_text_and_date = set()
     for tweet_text, tweet_date in all_text_and_date:
         cleaned_tweet_text = clean_tweet_text(tweet_text)
@@ -78,9 +80,9 @@ def clean_and_keep_unique_text_and_date(all_text_and_date):
     return unique_text_and_date
     
     
-def get_symptoms():
-    with open(aefis_file, 'r', encoding='utf-8') as f:
-        symptoms = json.loads(f.read())
+def get_symptom_queries():
+    with open(symptoms_file, 'r', encoding='utf-8') as f:
+        symptoms = f.read().split('\n')
     return symptoms
     
     
@@ -94,18 +96,21 @@ def format_query(raw):
 #    return f"%{raw}%" # this was for ilike (% is wildcard that lets text appear before and after)
     
     
-def get_all_aefis_with_date_for_data_source(data_source):
+def get_all_tweets_with_symptoms_with_date_for_data_source(data_source):
     conn = establish_psql_connection(**LOCAL_DB_CREDENTIALS)
-    client = PsqlClient(conn)
-    symptoms = get_symptoms()
-    all_text_and_date = []
-    for symptom in symptoms:
-        for symptom_synonym in symptoms[symptom]:
-            formatted_query = format_query(symptom_synonym)
-            results = client.search_vaccine_tweet_text(formatted_query, data_source=data_source)
-            tweet_text_and_date = [[symptom_synonym, r['tweet_text'], r['created_at']] for r in results]
-            all_text_and_date += tweet_text_and_date
-    return all_text_and_date
+    symptom_queries = get_symptom_queries()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    results = []
+    for query in symptom_queries:
+        cur.execute(f'''SELECT * FROM vaccine_tweets
+                        WHERE ts @@ %s
+                        AND source = %s''', (query, data_source))
+        r = cur.fetchall()
+        for i in r:
+            i['query'] = query
+        results += r
+    tweet_text_and_date = [[r['tweet_text'], r['created_at'], r['query']] for r in results]
+    return tweet_text_and_date
     
     
 def clean_tweet_text(tweet_text):
@@ -119,11 +124,34 @@ def clean_tweet_text(tweet_text):
     
     
 def get_all_unique_aefis_with_date_for_data_source(data_source):
-    all_text_and_date = get_all_aefis_with_date_for_data_source(data_source)
+    all_text_and_date = get_all_tweets_with_symptoms_with_date_for_data_source(data_source)
     unique_text_with_date = clean_and_keep_unique_text_with_date(all_text_and_date)
     return unique_text_with_date
-    
-    
+
+
+def save_sv_tweets_between_dates():
+    conn = establish_psql_connection(**LOCAL_DB_CREDENTIALS)
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    data_source = "monkeypox"
+    sql = f'''SELECT * FROM tweets WHERE created_at >= '2022-04-21'::date
+               AND created_at <= '2023-01-10'::date
+               AND source = %s'''
+    cur.execute(sql, (data_source,))
+
+    tweets = cur.fetchall()
+    df = pd.DataFrame(tweets)
+    df.to_csv('mpox tweets.csv')
+
+    sql = f'''SELECT * FROM vaccine_tweets WHERE created_at >= '2022-04-21'::date
+               AND created_at <= '2023-01-10'::date
+               AND source = %s'''
+    cur.execute(sql, (data_source,))
+
+    tweets = cur.fetchall()
+    df = pd.DataFrame(tweets)
+    df.to_csv('mpox vaccine tweets.csv')
+
+
 if __name__ == "__main__":
     main()
 

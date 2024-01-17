@@ -1,0 +1,425 @@
+{
+    "lymphadenopathy": [
+        "swollen nodes",
+        "nodes swollen"
+    ],
+    "encephalitis": [
+        "brain stem",
+        "panencephalitis"
+    ],
+    "encephalopathy": [],
+    "seizure": [
+        "tuberous sclerosis",
+        "epilepticus",
+        "febrile convulsion",
+        "eclampsia",
+        "generalised tonic-clonic seizure",
+        "epilepsy"
+    ],
+    "anaesthesia": [],
+    "paraesthesia": [],
+    "rash": [
+        "all over my body"
+    ],
+    "kidney injury": [],
+    "cutaneous vasculitis": [],
+    "tinnitus": [],
+    "haematochezia": [],
+    "cardiac arrhythmias": [
+        "arrhythmia",
+        "tachycardia",
+        "supraventricular",
+        "ventricular",
+        "long qt syndrome",
+        "atrial",
+        "fibrillation"
+    ],
+    "cardiac failure": [
+        "cardiac arrest"
+    ],
+    "rhabdomyolysis": [],
+    "capillary leak syndrome": [],
+    "alport": [
+        "sudden hearing loss",
+        "mumps deafness",
+        "deafness transitory",
+        "hypoacusis",
+        "neurosensory",
+        "deafness"
+    ],
+    "glomerulonephritis": [
+        "iga",
+        "nephropathy",
+        "granulomatosis",
+        "polyangiitis",
+        "glomerulosclerosis",
+        "nephrotic"
+    ],
+    "pancreatitis": [],
+    "autoimmune disorders": [
+        "pemphigus",
+        "vasculitis",
+        "erythema",
+        "nodosum",
+        "stiff person",
+        "antiphospholipid",
+        "alopecia",
+        "areata",
+        "myelitis",
+        "thrombocytopenic",
+        "purpura",
+        "autoimmune hepatitis",
+        "evans",
+        "vitiligo",
+        "kawasaki",
+        "multiple sclerosis",
+        "neuromyelitis",
+        "autoimmune arthritis",
+        "lupus",
+        "myositis",
+        "polyarteritis",
+        "nodosa",
+        "sarcoidosis",
+        "pemphigoid",
+        "stevens-johnson",
+        "erythematosus",
+        "sarcoidosis",
+        "hypoprothrombinaemia",
+        "urticarial",
+        "heparin-induced",
+        "thrombocytopenia",
+        "still's disease",
+        "basedow",
+        "thrombocytopenia",
+        "sjogren",
+        "erythematosus",
+        "coeliac",
+        "mellitus",
+        "diabetes",
+        "myasthenia",
+        "rheumatoid",
+        "arthritis",
+        "colitis",
+        "ulcerative",
+        "scleroderma",
+        "thyroiditis",
+        "interstitial lung",
+        "antisynthetase",
+        "pancreatitis",
+        "polymyalgia",
+        "rheumatica",
+        "uveitis",
+        "neuritis",
+        "polymyositis",
+        "thyroiditis",
+        "polychondritis",
+        "lichen planus",
+        "guillain-barre",
+        "spondylitis",
+        "erythema multiforme",
+        "ankylosing",
+        "inflammatory",
+        "haemolytic",
+        "anaemia",
+        "multiple sclerosis",
+        "crohn",
+        "spondyloarthropathy",
+        "raynaud",
+        "psoriasis",
+        "dermatomyositis",
+        "demyelinating",
+        "polyneuropathy",
+        "planopilaris",
+        "giant cell",
+        "arteritis",
+        "biliary",
+        "cholangitis",
+        "eosinophilic",
+        "granulomatosis",
+        "polyangiitis",
+        "autoimmune"
+    ],
+    "anxiety": [
+        "panic attack"
+    ],
+    "chest pain": [
+        "congested",
+        "heartburn",
+        "lungs burning",
+        "pains in my chest",
+        "chest hurt",
+        "pain in chest",
+        "lung pain",
+        "congestion",
+        "ribs hurt"
+    ],
+    "cough": [
+        "coughing"
+    ],
+    "dyspnea": [
+        "labored breathing",
+        "struggling with breathing",
+        "breathing trouble",
+        "get breathless",
+        "difficulty breathing",
+        "breathing difficulties",
+        "gasping for air",
+        "breathing problems",
+        "respiratory symptoms",
+        "acute respiratory distress",
+        "hard to breathe",
+        "barely breathe",
+        "difficult breathing",
+        "shortness of breath",
+        "short of breath",
+        "couldn't breathe",
+        "barely able to breathe",
+        "difficulty of breathing",
+        "respiratory distress",
+        "difficulty in breathing",
+        "loss of breath",
+        "breathing issues",
+        "lung issues",
+        "breathlessness",
+        "short of breath",
+        "shortness of breathe",
+        "struggling to breathe",
+        "can barely breathe"
+    ],
+    "chest tightness": [
+        "chest congestion",
+        "tightness in my chest",
+        "tight chest",
+        "tightness of chest",
+        "pressure on my chest",
+        "sitting on my chest",
+        "chest pressure",
+        "tightness in chest"
+    ],
+    "fatigue": [
+        "weakness",
+        "tiredness",
+        "tired",
+        "feel weak",
+        "exhausted",
+        "pretty weak",
+        "feeling weak",
+        "loss of energy"
+    ],
+    "oropharyngeal pain": [
+        "trouble swallowing",
+        "dry throat",
+        "strep throat",
+        "itchy throat",
+        "swollen gland",
+        "throat pain",
+        "throat infection",
+        "sore throat",
+        "throat ache",
+        "scratchy throat",
+        "throat hurt"
+    ],
+    "dizziness/disorientation/confusion": [
+        "foggy brain",
+        "light headedness",
+        "couldn't stand",
+        "delirium",
+        "dizziness",
+        "vertigo",
+        "dizzy",
+        "disorientation",
+        "disoriented"
+    ],
+    "headache": [
+        "pressure in my head",
+        "throbbing head",
+        "head cold",
+        "sore head",
+        "head is pounding",
+        "head hurt",
+        "head ache",
+        "head is killing me",
+        "migraine"
+    ],
+    "paranasal sinus discomfort": [
+        "sinus congestion",
+        "sinus infection",
+        "sinus pressure"
+    ],
+    "pyrexia": [
+        "increase in temperature",
+        "high temperature",
+        "fever"
+    ],
+    "chills": [
+        "shakes",
+        "shaking",
+        "shivering",
+        "body chills",
+        "shiver",
+        "shivered",
+        "shaking uncontrollably"
+    ],
+    "nausea": [
+        "nauseous",
+        "nauseousness",
+        "nasuea"
+    ],
+    "eye pain": [
+        "burning eyes",
+        "sore eyes",
+        "eyes hurt",
+        "swollen eyes",
+        "puffy eyes",
+        "heavy eyes"
+    ],
+    "loss of appetite": [
+        "poor appetite",
+        "couldn't eat",
+        "no appetite",
+        "lost appetite",
+        "lack of appetite"
+    ],
+    "anosmia": [
+        "smell senses",
+        "sense of smell has returned",
+        "lost my sense of smell",
+        "couldn't smell",
+        "lost our sense of smell",
+        "lack of smell",
+        "lost sense of smell",
+        "loss of sense of smell",
+        "loss of smell",
+        "cant smell",
+        "lost of smell",
+        "lose my sense of smell",
+        "no sense of smell",
+        "hyposmia",
+        "losing my sense of smell",
+        "lost my smell",
+        "complete loss of smell",
+        "sense of smell"
+    ],
+    "ageusia": [
+        "taste anything",
+        "lack of taste",
+        "no taste",
+        "lost my sense of taste",
+        "lost of taste",
+        "losing my sense of taste",
+        "can't taste anything",
+        "could not taste",
+        "taste senses",
+        "couldn't taste",
+        "loss of taste",
+        "can't taste",
+        "little taste",
+        "no sense of taste",
+        "lost my taste",
+        "cant taste",
+        "sense of taste"
+    ],
+    "rhinorrhea": [
+        "nasal congestion",
+        "slightly runny nose",
+        "nose congestion",
+        "running nose",
+        "stuffy nose",
+        "blocked nose",
+        "runny nose"
+    ],
+    "sneezing": [
+        "sneezed",
+        "sneeze"
+    ],
+    "hyperhidrosis": [
+        "nightsweats",
+        "hot sweats",
+        "night sweats",
+        "sweaty",
+        "cold sweats",
+        "sweating",
+        "sweat"
+    ],
+    "myalgia": [
+        "muscle spasm",
+        "muscles ache",
+        "muscle soreness",
+        "muscle ache",
+        "muscle hurt",
+        "muscle pain"
+    ],
+    "insomnia": [
+        "difficulty sleeping",
+        "sleepless",
+        "haven't slept",
+        "poor sleep"
+    ],
+    "vomiting": [
+        "vomited",
+        "vomit",
+        "vomitting"
+    ],
+    "bronchitis": [],
+    "abdominal pain": [
+        "stomach aches",
+        "stomach cramps"
+    ],
+    "body ache & pain": [
+        "feeling achey",
+        "feeling achy",
+        "backache",
+        "aches and pain",
+        "ache all over",
+        "face pain",
+        "whole body is sore",
+        "hurt to move"
+    ],
+    "lethargic": [
+        "lethargy",
+        "lacking energy",
+        "no energy",
+        "lost mobility",
+        "groggy"
+    ],
+    "hemoptysis": [],
+    "wheezing": [
+        "wheezy"
+    ],
+    "diarrhea": [
+        "stomach bug",
+        "gi issues",
+        "diarrhoea",
+        "stomach upset",
+        "upset stomach"
+    ],
+    "pruritus": [
+        "itchy"
+    ],
+    "irritability": [],
+    "upper respiratory tract infection": [
+        "chest infection",
+        "upper respiratory infection",
+        "respiratory infection"
+    ],
+    "ear infection/pain": [
+        "ear pain",
+        "ears hurt"
+    ],
+    "hypertension": [
+        "high blood pressure"
+    ],
+    "dehydration": [
+        "dehydrated"
+    ],
+    "arthralgia": [
+        "joint pains",
+        "joints pain"
+    ],
+    "visual impairment": [],
+    "sputum increased": [],
+    "hot flush": [
+        "hot flashes"
+    ],
+    "nasal dryness": []
+}

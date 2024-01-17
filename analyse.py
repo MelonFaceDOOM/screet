@@ -1,5 +1,4 @@
 import sys
-from analysis.find_aefis import save_aefis_for_all_data_sources
 from analysis.status_update import do_status_update
 from analysis.find_misinformation import save_all_misinfo
 from analysis.search_in_tweet_db import create_hist_for_search_term
@@ -7,9 +6,7 @@ from analysis.search_in_tweet_db import create_hist_for_search_term
 
 def main():
     command = sys.argv[1].lower().strip()
-    if command == "aefis":
-        save_aefis_for_all_data_sources()
-    elif command == "status":
+    if command == "status":
         do_status_update()
     elif command == 'misinfo':
         save_all_misinfo()

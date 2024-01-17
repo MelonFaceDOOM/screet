@@ -4,7 +4,7 @@ import csv
 import io 
 
 
-def get_file_paths_from_folder(folder_path):
+def get_file_paths_from_folder_and_subfolders(folder_path):
     file_paths = []
     for subdir, dirs, files in os.walk(folder_path):
         for file in files:
@@ -23,7 +23,7 @@ def get_file_names_and_paths_from_folder(folder_path):
     return file_names_and_paths
 
 
-def get_only_file_paths_from_folder(folder_path):
+def get_file_paths_from_folder(folder_path):
     # ignores subfolders
     list_files = []
     files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
@@ -31,6 +31,14 @@ def get_only_file_paths_from_folder(folder_path):
         joined = os.path.join(folder_path, filename)
         list_files.append(joined)
     return list_files
+
+
+def get_subfolder_paths_from_folder(folder_path):
+    subfolder_paths = []
+    for root, dirs, files in os.walk(folder_path):
+        for dir in dirs:
+            subfolder_paths.append(os.path.join(root, dir))
+    return subfolder_paths
 
 
 def flatten_obj_list(obj_list, headers=True):

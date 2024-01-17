@@ -4,7 +4,7 @@ from db.db_client import PsqlClient, establish_psql_connection
 from db.models import TwitterVaccineMention
 
 
-vaccines_file = r"../vaccines/vaccines.txt"
+vaccines_file = r"vaccines/vaccines_by_disease.txt"
 
 
 def main():
@@ -38,8 +38,18 @@ def check_new_tweets_for_vaccine_mentions():
     while unchecked_vaccine_tweet_ids:
         chunk = unchecked_vaccine_tweet_ids[:chunk_size]
         unchecked_vaccine_tweet_ids = unchecked_vaccine_tweet_ids[chunk_size:]
-        cur.execute('''INSERT INTO vaccine_tweets
-                       (SELECT tweets.*
+        cur.execute('''INSERT INTO vaccine_tweets (id, date_entered, source, user_id, conversation_id, created_at,
+                       tweet_text, like_count, reply_count, quote_count) 
+                       (SELECT tweets.id,
+                       tweets.date_entered,
+                       tweets.source,
+                       tweets.user_id,
+                       tweets.conversation_id,
+                       tweets.created_at,
+                       tweets.tweet_text,
+                       tweets.like_count,
+                       tweets.reply_count,
+                       tweets.quote_count
                        FROM tweets INNER JOIN vaccine_mentions
                        ON tweets.id = vaccine_mentions.tweet_id
                        AND tweets.id in %s)

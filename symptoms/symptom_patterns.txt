@@ -1,0 +1,31 @@
+{"negative_effect": ["{effect} {bodypart}",
+                            "{effect} in my {bodypart}",
+                            "{effect} on my {bodypart}",
+                            "{effect} in {bodypart}",
+                            "{effect} of {bodypart}",
+                            "{effect} on {bodypart}",
+                            "{bodypart} {effect}",
+                            "{bodypart} is {effect}",
+                            "{bodypart} in {effect}",
+                            "{bodypart} is in {effect}",
+                            "{bodypart} is a little {effect}"],
+
+"function_inability": ["{inability} {function}"],
+"function_deficiency": ["{deficiency} {function}",
+                                "{deficiency} of {function}",
+                                "{function} {deficiency}",
+                                "{function} is {deficiency}"],
+
+"sensory_inability": ["{inability} {sense}"],
+"sensory_deficiency": ["{deficiency} {sense}",
+                               "{deficiency} in my sense of {sense}",
+                               "{deficiency} with {sense}",
+                               "{deficiency} with my {sense}"],
+
+"sensory_loss": ["lost sense of {sense}",
+                         "lost my sense of {sense}",
+                         "losing my sense of {sense}",
+                         "lost my {sense}",
+                         "loss of sense of {sense}",
+                         "loss of {sense}"]
+}

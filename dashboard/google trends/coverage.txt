@@ -1,0 +1,10 @@
+Terms Monitored
+monkeypox + "variole du singe" + "viruela simica" + "vaiolo delle scimmie" + affenpocken + サル痘
+polio + ポリオ
+covid19 + covid
+
+Countries
+canada
+united_states
+
+ Time Frame: 2023-04-16 15:07:32.385038 to 2023-07-16 15:07:32.385317

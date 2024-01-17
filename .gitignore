@@ -13,10 +13,12 @@ hydrated_imported/
 misc/
 search_results/
 config.py
-temp.py
+symptoms/QA_symptoms.py
+symptoms/side_effects/source files
 *.db
 *.png
 *.csv
+*.7z
 aefis_2022_08_20_no_duplicates.txt
 aefi_tweet_text_2022-10-14.txt
 all_aefi_tweet_text_2022-08-29.txt

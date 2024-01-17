@@ -1,0 +1,346 @@
+{
+    "vaccine-specific": [
+        "vaccine-associated enhanced disease",
+        "vaccine-associated enhanced disease",
+        "post vaccine syndrome"
+    ],
+    "lymphadenopathy": [
+        "lymphadenopathy",
+        "lymphoedema"
+    ],
+    "rhabdomyolysis": [
+        "rhabdomyolysis"
+    ],
+    "cutaneous vasculitis": [
+        "cutaneous vasculitis"
+    ],
+    "paraesthesia": [
+        "paraesthesia"
+    ],
+    "haematochezia": [
+        "haematochezia"
+    ],
+    "pancreatitis": [
+        "pancreatitis"
+    ],
+    "capillary leak syndrome": [
+        "capillary leak syndrome"
+    ],
+    "hair loss": [
+        "hair loss",
+        "alopecia"
+    ],
+    "paralysis": [
+        "paralysis",
+        "numbness"
+    ],
+    "hyperpigmentation": [
+        "hyperpigmentation",
+        "skin turning black",
+        "frostbite"
+    ],
+    "hemorrhage": [
+        "hemorrhage",
+        "haemorrhage"
+    ],
+    "blood clot": [
+        "blood clot",
+        "bloodclot",
+        "thrombophilia",
+        "thrombosis",
+        "dvt"
+    ],
+    "encephalitis": [
+        "encephalitis",
+        "brain stem",
+        "panencephalitis",
+        "encephalopathy"
+    ],
+    "haematuria": [
+        "haematuria"
+    ],
+    "glomerulonephritis": [
+        "glomerulonephritis",
+        "iga",
+        "nephropathy",
+        "granulomatosis",
+        "polyangiitis",
+        "glomerulosclerosis",
+        "nephrotic"
+    ],
+    "autoimmune disorders": [
+        "pemphigus",
+        "vasculitis",
+        "erythema",
+        "nodosum",
+        "stiff person",
+        "antiphospholipid",
+        "areata",
+        "myelitis",
+        "thrombocytopenic",
+        "purpura",
+        "autoimmune hepatitis",
+        "vitiligo",
+        "kawasaki",
+        "multiple sclerosis",
+        "neuromyelitis",
+        "autoimmune arthritis",
+        "myositis",
+        "polyarteritis",
+        "nodosa",
+        "sarcoidosis",
+        "pemphigoid",
+        "stevens-johnson",
+        "erythematosus",
+        "sarcoidosis",
+        "hypoprothrombinaemia",
+        "urticarial",
+        "heparin-induced",
+        "thrombocytopenia",
+        "basedow",
+        "thrombocytopenia",
+        "sjogren",
+        "erythematosus",
+        "myasthenia",
+        "rheumatoid",
+        "arthritis",
+        "ulcerative",
+        "scleroderma",
+        "thyroiditis",
+        "interstitial lung",
+        "antisynthetase",
+        "pancreatitis",
+        "polymyalgia",
+        "rheumatica",
+        "uveitis",
+        "neuritis",
+        "polymyositis",
+        "thyroiditis",
+        "polychondritis",
+        "lichen planus",
+        "guillain-barre",
+        "spondylitis",
+        "erythema multiforme",
+        "still disease",
+        "ankylosing",
+        "inflammatory",
+        "haemolytic",
+        "anaemia",
+        "multiple sclerosis",
+        "spondyloarthropathy",
+        "raynaud",
+        "psoriasis",
+        "dermatomyositis",
+        "demyelinating",
+        "polyneuropathy",
+        "planopilaris",
+        "giant cell",
+        "arteritis",
+        "biliary",
+        "cholangitis",
+        "eosinophilic",
+        "granulomatosis",
+        "polyangiitis",
+        "autoimmune",
+        "meningitis",
+        "oesophagitis"
+    ],
+    "irritability": [],
+    "itching": [
+        "pruritus",
+        "itchy",
+        "dry eyes",
+        "eyes dry",
+        "dry mouth",
+        "mouth dry"
+    ],
+    "rash": [
+        "rash"
+    ],
+    "tinnitus": [
+        "tinnitus",
+        "ringing in ears",
+        "ringing in my ears"
+    ],
+    "dehydration": [
+        "dehydrated"
+    ],
+    "hot flush": [
+        "hot flashes"
+    ],
+    "anxiety": [
+        "panic attack",
+        "anxiety attack"
+    ],
+    "seizure": [
+        "seizure",
+        "tuberous sclerosis",
+        "epilepticus",
+        "febrile convulsion",
+        "eclampsia",
+        "generalised tonic-clonic seizure",
+        "epilepsy"
+    ],
+    "cardiac issues": [
+        "arrhythmia",
+        "tachycardia",
+        "supraventricular",
+        "ventricular",
+        "long qt syndrome",
+        "atrial",
+        "fibrillation",
+        "cardiac arrest",
+        "heartburn",
+        "chest congestion",
+        "sitting on my chest",
+        "high blood pressure",
+        "palpitations",
+        "crushing chest",
+        "ischaemia"
+    ],
+    "temperature issues": [
+        "increase in temperature",
+        "high temperature",
+        "fever",
+        "feverish",
+        "violently shake",
+        "shivering",
+        "body chills",
+        "shiver",
+        "shivered",
+        "uncontrollably shaking",
+        "shaking uncontrollably",
+        "hyperhidrosis",
+        "pyrexia",
+        "nightsweats",
+        "hot sweats",
+        "night sweats",
+        "cold sweats",
+        "sweat"
+    ],
+    "hernia": [
+        "hernia"
+    ],
+    "runny nose": [
+        "rhinorrhea",
+        "congestion",
+        "runny nose",
+        "running nose",
+        "stuffy nose",
+        "blocked nose",
+        "congested",
+        "sneezed",
+        "sneeze",
+        "sneezing",
+        "sputum"
+    ],
+    "cough": [
+        "cough",
+        "coughing",
+        "wheezy",
+        "wheezing",
+        "hemoptysis",
+        "dry throat",
+        "throat dry",
+        "crushing lung"
+    ],
+    "nausea": [
+        "nauseous",
+        "nauseousness",
+        "nausea",
+        "vomiting",
+        "vomited",
+        "vomit",
+        "vomitting"
+    ],
+    "dizziness/disorientation": [
+        "foggy brain",
+        "light headedness",
+        "delirium",
+        "dizziness",
+        "vertigo",
+        "dizzy",
+        "disorientation",
+        "disoriented",
+        "brainfog",
+        "brain fog",
+        "cognitive"
+    ],
+    "body ache & pain": [
+        "ache",
+        "body pain",
+        "feeling achy",
+        "backache",
+        "whole body is sore",
+        "hurt to move",
+        "myalgia",
+        "arthralgia"
+    ],
+    "headache": [
+        "headache",
+        "head cold",
+        "migraine",
+        "head pressure",
+        "sinus pressure"
+    ],
+    "lethargy": [
+        "lethargy",
+        "lethargic",
+        "insomnia",
+        "groggy",
+        "fatigue",
+        "super tired",
+        "chronic fatigue",
+        "extreme fatigue",
+        "unusual fatigue",
+        "sleepless",
+        "feel weak"
+    ],
+    "diarrhea": [
+        "stomach bug",
+        "gi issues",
+        "diarrhea",
+        "diarrhoea",
+        "stomach upset",
+        "upset stomach"
+    ],
+    "infection": [
+        "upper respiratory tract infection",
+        "upper respiratory infection",
+        "respiratory infection",
+        "bronchitis",
+        "strep throat"
+    ],
+    "dyspnea": [
+        "dyspnea",
+        "respiratory symptoms",
+        "acute respiratory distress",
+        "hard to breathe",
+        "shortness of breath",
+        "short of breath",
+        "respiratory distress",
+        "get breathless"
+    ],
+    "sensory loss": [
+        "anosmia",
+        "hyposmia",
+        "ageusia",
+        "visual impairment",
+        "alport",
+        "sudden hearing loss",
+        "deafness transitory",
+        "hypoacusis",
+        "neurosensory",
+        "deafness",
+        "sense of taste",
+        "sense of smell",
+        "smell sense",
+        "smell anything",
+        "taste anything"
+    ],
+    "ocular conditions": [
+        "dysphotopsia",
+        "hyphema",
+        "keratorrhexis"
+    ]
+}

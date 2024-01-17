@@ -1,0 +1,66 @@
+excluded_categories = [
+ 'Investigations',
+ 'Product issues',
+ 'Social circumstances',
+ 'Surgical and medical procedures',
+ 'Injury, poisoning and procedural complications'
+]
+
+bodyparts:
+Sacroiliac 
+scapula
+sciatic
+stoma
+Subarachnoid 
+subdural
+meniscus
+mucosal
+airway
+artery
+vein
+cornea
+intestine
+gastrointestine
+lacrima
+fetus
+foetus
+osteochondral
+ovary
+ovarian
+Pneumothorax
+peritoneal
+ileus
+patella
+vitreous
+ammonia
+
+
+functions: 
+menstruation
+menstrual
+
+disorder:
+inflammation, discomfort, irritation, erythema, laceration, macule, nodule, plaque, oedema, pallor, papule, rupture, hypersensitivity, leak, complication, trauma, abrasion, luxation, contusion, avulsion, obstruction
+
+
+conditions:
+Dysphotopsia
+Gadolinium 
+ischaemia
+reocclusion
+restenosis
+Haematuria 
+Hyphaema
+abortion
+Keratorhexis
+meningitis
+Pneumoconiosis
+Pneumonitis chemical
+Pneumorrhachis
+Pneumocephalus
+post vaccine syndrome
+lymphoedema
+oesophagitis
+
+
+There are a lot of items in "investigations" that might be interesting, for instance "Blood cholesterol increased". I could definitely see people talking about elevated/lowered levels of various metrics that resulted from vaccination.

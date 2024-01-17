@@ -1,0 +1,70 @@
+these should be found on their own, without any preceding "loss of..."
+"sense of taste"
+"sense of smell"
+smell sense
+smell/taste anything
+
+
+add these in:
+still's disease
+stills disease
+horrible ache
+side effects
+increase temperature
+body ache
+body pain
+couldn't stand
+couldn't eat 
+couldn't breathe
+couldn't smell
+groggy
+lost [mobility]
+feverish
+super tired
+lack [taste]
+sore [arm]
+arm is sore
+arm felt a little sore
+fatigue
+get breathless
+palpitations
+vaccine associated enhanced disease
+paraesthesia
+feel weak
+anxiety attack
+extreme fatigue
+hair loss
+hyperpigmentation, skin turning black, frostbite
+blood clot, bloodclot, thrombophilia, thrombosis, dvt
+cognitive brain fog
+eyelid
+
+
+
+remove the following deficiency words:
+kill
+collapse (but add in collapsed lung)
+
+remove the following effect words:
+heavy
+crush
+
+
+remove the following because they cause a high number of false positives
+diabetes
+hypertension
+lupus
+mellitus
+coeliac
+colitis
+chrohns
+
+
+
+
+
+
+
+
+
+

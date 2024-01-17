@@ -11,7 +11,7 @@ from db.db_client import establish_psql_connection
 from analysis.find_aefis import get_all_unique_aefis_with_date_for_data_source
 
 
-data_sources = ["monkeypox", "polio"]
+data_sources = ["monkeypox", "polio", "pertussis"]
 
 def main():
     do_todays_analysis()
@@ -29,7 +29,6 @@ def do_todays_analysis():
         query_and_save_data(data_file_path=data_file_path,
                             aefi_file_path=aefi_file_path,
                             data_source=data_source)
-                         
         df = pd.read_csv(data_file_path, encoding='utf-8')
         df = filter_out_old_data(df)
         df_aefi = pd.read_csv(aefi_file_path, encoding='utf-8')
@@ -41,13 +40,12 @@ def do_todays_analysis():
                         [df_aefi, f'Potential {data_source} Vaccine AEFIs']]
             )
         df_dates_and_counts = pd.DataFrame(dates_and_counts, columns=['Date', 'Tweet Classification', 'Tweet Count'])
-        
+
         tweets_by_date = create_fig_tweets_and_aefis_by_date(df_dates_and_counts)
-        tweets_by_date_file_path = os.path.join(output_folder_path, f"{data_source}_{date}_tweets_by_date.png")    
+        tweets_by_date_file_path = os.path.join(output_folder_path, f"{data_source}_{date}_tweets_by_date.png")
         tweets_by_date.write_image(tweets_by_date_file_path, format="png", width=1800, height=1200)
-        
-        create_wordcloud(df_aefi) # creates the figure in the plt object
-        wordcloud_file_path = os.path.join(output_folder_path, f"{data_source}_{date}_wordcloud.png")    
+        create_wordcloud(df_aefi)  # creates the figure in the plt object
+        wordcloud_file_path = os.path.join(output_folder_path, f"{data_source}_{date}_wordcloud.png")
         plt.savefig(wordcloud_file_path)
         
 
@@ -79,7 +77,7 @@ def get_tweets_for_data_source(data_source):
     
     
 def filter_out_old_data(df):
-    df['created_at']= pd.to_datetime(df['created_at'])
+    df['created_at'] = pd.to_datetime(df['created_at'])
     df = df[df['created_at'] >= "2022-08-01"]
     return df
     
@@ -130,7 +128,7 @@ def create_wordcloud(df):
     cleaned_text = df.apply(lambda x: clean_text(x['tweet_text']), axis=1)
     concat_text = cleaned_text.str.cat()
     wordcloud = WordCloud(max_words=50, width=1000, height=600, min_word_length=3).generate(concat_text)
-    plt.figure(figsize=(20,12))
+    plt.figure(figsize=(20, 12))
     plt.tight_layout(pad=0)
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")

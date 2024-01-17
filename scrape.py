@@ -1,18 +1,17 @@
 import sys
-from scraping.monkey_polio_weekly_search import do_weekly_search
+from scraping.search_and_import import do_weekly_search
 from scraping.hydrate_ids import hydrate_id_files
-from scraping.search import search_for_term
+from data.dehydrated.panacea.panacea_download_data import download_and_process_panacea_ids
 
 
 def main():
     command = sys.argv[1].lower().strip()
     if command == "ids":
         hydrate_id_files()
-    elif command == "search_for_term":
-        search_term = sys.argv[2].lower().strip()
-        search_for_term(search_term)
-    elif command == 'mp':
-        do_weekly_search()
+    elif command == "pan":
+        download_and_process_panacea_ids()
+    elif command == 'search':
+        do_weekly_search() # includes db import
     else:
         raise ValueError(f"command {command} not recognized")
 
